@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: routes-template
+objects:
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      "haproxy.router.openshift.io/timeout": 30m
+    labels:
+      app: front
+      version: ${VERSION}
+      revision: ${REVISION}
+    name: front-route
+  spec:
+    host: ${FQDN}
+    path: "/conciliation"
+    port:
+      targetPort: 8080-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    to:
+      kind: Service
+      name: front
+    wildcardPolicy: None
+parameters:
+- name: VERSION
+  description: "Route version"
+  required: true
+- name: REVISION
+  description: "Deployment revision"
+  required: true
+- name: FQDN
+  description: "Route Full Qualified Domain Name"
+  required: true
