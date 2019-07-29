@@ -9,7 +9,7 @@ pipeline {
                       steps{
                             echo 'Trying build project with OpenShift'
                           script{
-                              openshift.withCluster( 'OpenShift_PT' ) {
+                              openshift.withCluster( 'OpenShift_PT', 'techfirm-openshift-dev' ) {
                                       echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
                               }
                           }
