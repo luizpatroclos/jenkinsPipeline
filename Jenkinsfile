@@ -9,8 +9,8 @@ pipeline {
                       steps{
                             echo 'Trying build project with OpenShift'
                           script{
-                              openshift.withProject() { // Use "default" cluster or fallback to OpenShift cluster detection
-                                      echo "Hello from the project running Jenkins: ${openshift.project()}"
+                              openshift.withCluster( 'OpenShift_PT' ) {
+                                      echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
                               }
                           }
                       }
