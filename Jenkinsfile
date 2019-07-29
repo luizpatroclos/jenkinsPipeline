@@ -13,7 +13,7 @@ pipeline {
                               // find "default" cluster configuration and fallback to OpenShift cluster detection
                               // ... operations relative to the default cluster ...
                                 echo 'return something'
-                                 echo 'Hello from ${openshift.cluster()} default project: ${openshift.project()}'
+                                 echo "default project: ${openshift.project()}"
                               }
                           }
                       }
