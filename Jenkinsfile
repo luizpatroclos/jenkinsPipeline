@@ -11,6 +11,8 @@ pipeline {
       steps{
         echo 'Trying build project with OpenShift'
 
+         script{
+
         openshift.withCluster( 'testpipeline', 'jenkins_openshift' ) {
 
          echo 'Autenticated' }
@@ -19,8 +21,8 @@ pipeline {
 
          echo 'Second Possibility'  } }
 
-        openshiftBuild(namespace: 'jenkinspipeline', bldCfg: 'jenkinspipeline', showBuildLogs: 'true')
-         script{
+        
+
         openshift.withProject {
         // find "default" cluster configuration and fallback to OpenShift cluster detection
         // ... operations relative to the default cluster ...
@@ -30,6 +32,15 @@ pipeline {
         }
       }
     }
+     stage ('buildInDevelopment2') {
+
+          steps{
+
+          openshiftBuild(namespace: 'jenkinspipeline', bldCfg: 'jenkinspipeline', showBuildLogs: 'true')
+
+
+          }
+
       stage ('deployInDevelopment') {
 
       steps{
