@@ -2,9 +2,7 @@ def applicationName = "jenkinspipeline";
 def applicationNameST = "${applicationName}-st";
 
 pipeline{
-    agent {
-        label 'maven'
-    }
+    agent any
 
     stages{
             stage('build') {
