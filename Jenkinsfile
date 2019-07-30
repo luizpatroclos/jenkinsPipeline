@@ -7,10 +7,28 @@ pipeline {
     stages {
 
       stage ('buildInDevelopment') {
-        openshiftBuild(namespace: 'jenkinspipeline', buildConfig: 'nodejs-mongo-persistent', showBuildLogs: 'true')
+
+      steps{
+        echo 'Trying build project with OpenShift'
+
+        openshiftBuild(namespace: 'jenkinspipeline', buildConfig: 'jenkinspipeline', showBuildLogs: 'true')
+         script{
+        openshift.withProject {
+        // find "default" cluster configuration and fallback to OpenShift cluster detection
+        // ... operations relative to the default cluster ...
+        echo 'return something'
+        echo "default project: ${openshift.project()}"
+              }
+        }
       }
+    }
       stage ('deployInDevelopment') {
-        openshiftDeploy(namespace: 'pipeline-demo', deploymentConfig: 'nodejs-mongo-persistent')
+
+      steps{
+
+        openshiftDeploy(namespace: 'jenkinspipeline', deploymentConfig: 'jenkinspipeline')
+
+      }
       }
 
        stage('try connect openshift'){
