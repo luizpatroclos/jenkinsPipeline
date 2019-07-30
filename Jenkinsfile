@@ -5,22 +5,26 @@ pipeline{
     stages{
             stage('build') {
                 steps{
-                    sh script: "cd ${applicationName} && mvn -DskipTests clean package"
+                    echo 'step 1'
+                    //sh script: "cd ${applicationName} && mvn -DskipTests clean package"
                 }
             }
             stage('build system tests') {
                 steps{
-                    sh script: "cd ${applicationNameST} && mvn clean package"
+                    echo 'step 1'
+                    //sh script: "cd ${applicationNameST} && mvn clean package"
                 }
             }
             stage('unit tests') {
                 steps{
-                    sh script: "cd ${applicationName} && mvn test"
+                    echo 'step 1'
+                    //sh script: "cd ${applicationName} && mvn test"
                 }
             }
             stage('integration tests') {
                 steps{
-                    sh script: "cd ${applicationName} && mvn failsafe:integration-test failsafe:verify"
+                    echo 'step 1'
+                    //sh script: "cd ${applicationName} && mvn failsafe:integration-test failsafe:verify"
                 }
             }
             stage('s2i build'){
@@ -67,7 +71,8 @@ pipeline{
             }
             stage('system tests') {
                 steps{
-                    sh script: "cd ${applicationNameST} && mvn failsafe:integration-test failsafe:verify"
+                    echo 'step 1'
+                    //sh script: "cd ${applicationNameST} && mvn failsafe:integration-test failsafe:verify"
                 }
             }
     }
