@@ -1,9 +1,7 @@
 def applicationName = "jenkinspipeline";
 def applicationNameST = "${applicationName}-st";
-
 pipeline{
     agent any
-
     stages{
             stage('build') {
                 steps{
@@ -14,17 +12,17 @@ pipeline{
                 steps{
                     //sh script: "cd ${applicationNameST} && mvn clean package"
                 }
-            }    
+            }
             stage('unit tests') {
                 steps{
                     //sh script: "cd ${applicationName} && mvn test"
                 }
-            }    
+            }
             stage('integration tests') {
                 steps{
                     //sh script: "cd ${applicationName} && mvn failsafe:integration-test failsafe:verify"
                 }
-            } 
+            }
             stage('s2i build'){
                 steps{
                 script{
@@ -33,11 +31,11 @@ pipeline{
                             def build = openshift.selector("bc", applicationName);
                             def startedBuild = build.startBuild("--from-file=\"./${applicationName}/target/${applicationName}.war\"");
                             startedBuild.logs('-f');
-                            echo "${applicationName} build status: ${startedBuild.object().status}";                            
+                            echo "${applicationName} build status: ${startedBuild.object().status}";
                         }
                     }
                 }
-            }            
+            }
             }
             stage('wait until available'){
                 steps{
@@ -47,7 +45,7 @@ pipeline{
                                 def dc = openshift.selector('dc',applicationName )
                                 dc.rollout().status()
                             }
-                        }                
+                        }
                     }
                 }
             }
@@ -63,7 +61,7 @@ pipeline{
                                     echo "Unable to connect to ${applicationName}"
                                 }
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -71,6 +69,6 @@ pipeline{
                 steps{
                     //sh script: "cd ${applicationNameST} && mvn failsafe:integration-test failsafe:verify"
                 }
-            }    
-    }               
+            }
+    }
 }
