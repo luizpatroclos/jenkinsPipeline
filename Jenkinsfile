@@ -11,6 +11,14 @@ pipeline {
       steps{
         echo 'Trying build project with OpenShift'
 
+        openshift.withCluster( 'testpipeline', 'jenkins_openshift' ) {
+
+         echo 'Autenticated' }
+
+        openshift.withCluster( 'testpipeline' ) { openshift.doAs( 'jenkins_openshift' ) {
+
+         echo 'Second Possibility'  } }
+
         openshiftBuild(namespace: 'jenkinspipeline', bldCfg: 'jenkinspipeline', showBuildLogs: 'true')
          script{
         openshift.withProject {
