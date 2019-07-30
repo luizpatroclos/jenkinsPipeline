@@ -11,7 +11,7 @@ pipeline {
       steps{
         echo 'Trying build project with OpenShift'
 
-        openshiftBuild(namespace: 'jenkinspipeline', buildConfig: 'jenkinspipeline', showBuildLogs: 'true')
+        openshiftBuild(namespace: 'jenkinspipeline', bldCfg: 'jenkinspipeline', showBuildLogs: 'true')
          script{
         openshift.withProject {
         // find "default" cluster configuration and fallback to OpenShift cluster detection
@@ -26,7 +26,7 @@ pipeline {
 
       steps{
 
-        openshiftDeploy(namespace: 'jenkinspipeline', deploymentConfig: 'jenkinspipeline')
+        openshiftDeploy(namespace: 'jenkinspipeline', depCfg: 'jenkinspipeline')
 
       }
       }
