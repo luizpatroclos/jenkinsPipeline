@@ -30,7 +30,7 @@ pipeline{
             stage('s2i build'){
                 steps{
                 script{
-                    openshift.withCluster(){
+                    openshift.withCluster('testpipeline', 'jenkins_openshift'){
                         openshift.withProject(){
                             def build = openshift.selector("bc", applicationName);
                             def startedBuild = build.startBuild("--from-file=\"./${applicationName}/target/${applicationName}.war\"");
@@ -44,7 +44,7 @@ pipeline{
             stage('wait until available'){
                 steps{
                     script{
-                        openshift.withCluster() {
+                        openshift.withCluster('testpipeline', 'jenkins_openshift') {
                             openshift.withProject() {
                                 def dc = openshift.selector('dc',applicationName )
                                 dc.rollout().status()
