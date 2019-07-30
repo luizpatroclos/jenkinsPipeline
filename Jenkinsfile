@@ -6,16 +6,14 @@ pipeline {
 
     stages {
 
-    node ('') {
       stage ('buildInDevelopment') {
         openshiftBuild(namespace: 'jenkinspipeline', buildConfig: 'nodejs-mongo-persistent', showBuildLogs: 'true')
       }
       stage ('deployInDevelopment') {
         openshiftDeploy(namespace: 'pipeline-demo', deploymentConfig: 'nodejs-mongo-persistent')
       }
-    }
 
-        stage('try connect openshift'){
+       stage('try connect openshift'){
                       steps{
                             echo 'Trying build project with OpenShift'
                           script{
