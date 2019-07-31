@@ -56,13 +56,14 @@ pipeline{
             stage('Openshift-try current project'){
 
                     try {
-                                sh """ oc project "${OC_PROJECT_NAME}" """
-                            }
-                            catch (exc) {
-                                echo 'User do not exists'
-                            }
+                     sh """ oc project "${OC_PROJECT_NAME}" """
+                    }
+                    catch (exc) {
+                     echo 'User do not exists'
+                     }
+            }
 
-
+            stage('Openshift-keepGoing'){
                 steps{
                   script{
                       echo 'login to openshift project for currently loaded environment'
