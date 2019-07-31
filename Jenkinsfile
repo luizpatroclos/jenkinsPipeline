@@ -84,7 +84,6 @@ pipeline{
 
 
             stage('Create Project Again'){
-             when { not { OC_PROJECT_NAME 'master' } }
                 steps{
                     script{
                     echo 'create openshift project for currently loaded environment (if not exists)'
