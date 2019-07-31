@@ -61,6 +61,11 @@ pipeline{
                           sh  '''
                              oc project "${OC_PROJECT_NAME}"
                               '''
+                       }catch(){
+                          sh """
+                             oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
+                             """
+                         echo 'New Project Created'
                        } finally {
                               echo 'keepGoing'
                             }
