@@ -12,7 +12,7 @@ pipeline{
            string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description: 'project')
            string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
      }
-     
+
     stages{
             stage('build') {
                 steps{
@@ -63,7 +63,7 @@ pipeline{
                     script {
                        try {
                           sh  '''
-                             oc new-project "${params.OC_PROJECT_NAME}" --description="${params.OC_PROJECT_DESCRIPTION}" || true
+                             oc new-project ${params.OC_PROJECT_NAME} --description= ${params.OC_PROJECT_DESCRIPTION} || true
                               '''
                        }
                         finally {
