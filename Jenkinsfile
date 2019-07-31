@@ -53,6 +53,7 @@ pipeline{
                   }
                 }
             }
+          node{
             stage('Openshift-try current project'){
 
                     try {
@@ -62,6 +63,7 @@ pipeline{
                      echo 'User do not exists'
                      }
             }
+          }
 
             stage('Openshift-keepGoing'){
                 steps{
