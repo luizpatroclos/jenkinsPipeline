@@ -53,31 +53,16 @@ pipeline{
                   }
                 }
             }
+            stage('Openshift'){
 
-            stage('Openshift-try current project'){
-                steps{
-                    try {
-                     sh """ oc project "${OC_PROJECT_NAME}" """
-                    }
-                    catch (exc) {
-                     echo 'User do not exists'
-                     }
-                }
-            }
-
-
-            stage('Openshift-keepGoing'){
                 steps{
                   script{
-                      echo 'login to openshift project for currently loaded environment'
-                      sh """
-                      oc login -u "${OC_USER}" -p "${OC_PASSWORD}" "${OC_SERVER}" && echo "Logged in as ${OC_USER} on Openshift ${OC_SERVER}"
-                         """
-                      echo 'Successfully'
 
-                      echo '###################################'
-
-                      echo 'delete openshift project for currently loaded environment'
+                       if (sh """ oc project "${OC_PROJECT_NAME}" """  == null) {
+                          echo 'Please new Project here'
+                       }  else {
+                          echo 'I execute elsewhere'
+                          }
 
                       sh """
                       oc delete project "${OC_PROJECT_NAME}"
@@ -88,6 +73,7 @@ pipeline{
 
 
             stage('Create Project Again'){
+             when { not { OC_PROJECT_NAME 'master' } }
                 steps{
                     script{
                     echo 'create openshift project for currently loaded environment (if not exists)'
