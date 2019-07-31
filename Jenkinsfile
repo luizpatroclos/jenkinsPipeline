@@ -1,11 +1,14 @@
 def applicationName = "jenkinspipeline";
 def applicationNameST = "${applicationName}-st";
 
-def OC_PASSWORD = "dev";
-def OC_SERVER = "openshift.oc.techfirm.cloud:8443";
-def OC_USER = "dev";
-def OC_PROJECT_NAME = "jenkinspipeline";
-def OC_PROJECT_DESCRIPTION = "Pipeline Test";
+ parameters {
+
+       string(name: 'OC_PASSWORD', defaultValue: 'dev', description: 'pass')
+       string(name: 'OC_SERVER', defaultValue: 'openshift.oc.techfirm.cloud:8443', description: 'server')
+       string(name: 'OC_USER', defaultValue: 'dev', description: 'user')
+       string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description: 'project')
+       string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
+ }
 
 pipeline{
     agent any
@@ -39,7 +42,7 @@ pipeline{
                   script{
                       echo 'login to openshift project for currently loaded environment'
                       sh """
-                        oc login -u "${OC_USER}" -p "${OC_PASSWORD}" "${OC_SERVER}" && echo "Logged in as ${OC_USER} on Openshift ${OC_SERVER}"
+                        oc login -u "${params.OC_USER}" -p "${params.OC_PASSWORD}" "${params.OC_SERVER}" && echo "Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}"
                          """
                       echo 'Successfully'
 
@@ -59,7 +62,7 @@ pipeline{
                     script {
                        try {
                           sh  '''
-                             oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
+                             oc new-project "${params.OC_PROJECT_NAME}" --description="${params.OC_PROJECT_DESCRIPTION}" || true
                               '''
                        }
                         finally {
