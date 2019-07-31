@@ -47,23 +47,24 @@ pipeline{
 
                       echo 'select openshift project for currently loaded environment'
                       echo 'delete openshift project for currently loaded environment'
-                      echo 'create openshift project for currently loaded environment (if not exists)'
 
                        sh """
                         oc project "${OC_PROJECT_NAME}"
 
                         oc delete project "${OC_PROJECT_NAME}"
-
-                        oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
-
                           """
                   }
                 }
             }
-            stage('wait until available'){
+            stage('Create Project Again'){
                 steps{
                     script{
-                        echo 'step 4.5'
+                    echo 'create openshift project for currently loaded environment (if not exists)'
+                    
+                      sh """
+                      oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
+                      """
+                      echo 'New Project Created'
                     }
                 }
             }
