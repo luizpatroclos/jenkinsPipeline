@@ -5,7 +5,7 @@ def OC_PASSWORD = "dev";
 def OC_SERVER = "openshift.oc.techfirm.cloud:8443";
 def OC_USER = "dev";
 def OC_PROJECT_NAME = "jenkinspipeline";
-def OC_PROJECT_DESCRIPTION: "Pipeline Test";
+def OC_PROJECT_DESCRIPTION = "Pipeline Test";
 
 pipeline{
     agent any
