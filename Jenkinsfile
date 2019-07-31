@@ -53,17 +53,18 @@ pipeline{
                   }
                 }
             }
-          node{
-            stage('Openshift-try current project'){
 
+            stage('Openshift-try current project'){
+                steps{
                     try {
                      sh """ oc project "${OC_PROJECT_NAME}" """
                     }
                     catch (exc) {
                      echo 'User do not exists'
                      }
+                }
             }
-          }
+
 
             stage('Openshift-keepGoing'){
                 steps{
