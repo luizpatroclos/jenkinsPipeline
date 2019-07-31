@@ -11,32 +11,30 @@ pipeline{
             }
             stage('build system tests') {
                 steps{
-                    echo 'step 1'
+                    echo 'step 2'
                     //sh script: "cd ${applicationNameST} && mvn clean package"
                 }
             }
             stage('unit tests') {
                 steps{
-                    echo 'step 1'
+                    echo 'step 3'
                     //sh script: "cd ${applicationName} && mvn test"
                 }
             }
             stage('integration tests') {
                 steps{
-                    echo 'step 1'
+                    echo 'step 4'
                     //sh script: "cd ${applicationName} && mvn failsafe:integration-test failsafe:verify"
                 }
             }
-            stage('s2i build'){
+            stage('Openshift'){
                 steps{
                 script{
-                    openshift.withCluster('testpipeline', 'jenkins_openshift'){
-                        openshift.withProject(){
-                            def build = openshift.selector("bc", applicationName);
-                            def startedBuild = build.startBuild("--from-file=\"./${applicationName}/target/${applicationName}.war\"");
-                            startedBuild.logs('-f');
-                            echo "${applicationName} build status: ${startedBuild.object().status}";
-                        }
+                      echo 'login to openshift project for currently loaded environment'
+                      function oc_login() {
+                        oc login -u "${OC_USER}" -p "${OC_PASSWORD}" "${OC_SERVER}" && echo "Logged in as ${OC_USER} on Openshift ${OC_SERVER}"
+                      }
+                      echo 'Successfully'
                     }
                 }
             }
@@ -44,11 +42,7 @@ pipeline{
             stage('wait until available'){
                 steps{
                     script{
-                        openshift.withCluster('testpipeline', 'jenkins_openshift') {
-                            openshift.withProject() {
-                                def dc = openshift.selector('dc',applicationName )
-                                dc.rollout().status()
-                            }
+                        echo 'step 4.5'
                         }
                     }
                 }
@@ -56,16 +50,7 @@ pipeline{
             stage('verify service connectivity'){
                 steps{
                     script{
-                        openshift.withCluster() {
-                            openshift.withProject() {
-                                def connected = openshift.verifyService(applicationName)
-                                if (connected) {
-                                    echo "Successfully connected to ${applicationName}"
-                                } else {
-                                    echo "Unable to connect to ${applicationName}"
-                                }
-                            }
-                        }
+                        echo 'step 4.6'
                     }
                 }
             }
