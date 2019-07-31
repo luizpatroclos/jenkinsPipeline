@@ -45,12 +45,9 @@ pipeline{
 
                       echo '###################################'
 
-                      echo 'select openshift project for currently loaded environment'
                       echo 'delete openshift project for currently loaded environment'
 
                        sh """
-                        oc project "${OC_PROJECT_NAME}"
-
                         oc delete project "${OC_PROJECT_NAME}"
                           """
                   }
@@ -60,7 +57,7 @@ pipeline{
                 steps{
                     script{
                     echo 'create openshift project for currently loaded environment (if not exists)'
-                    
+
                       sh """
                       oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
                       """
