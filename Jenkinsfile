@@ -4,6 +4,8 @@ def applicationNameST = "${applicationName}-st";
 def OC_PASSWORD = "dev";
 def OC_SERVER = "openshift.oc.techfirm.cloud:8443";
 def OC_USER = "dev";
+def OC_PROJECT_NAME = "jenkinspipeline";
+def OC_PROJECT_DESCRIPTION: "Pipeline Test";
 
 pipeline{
     agent any
@@ -40,6 +42,21 @@ pipeline{
                         oc login -u "${OC_USER}" -p "${OC_PASSWORD}" "${OC_SERVER}" && echo "Logged in as ${OC_USER} on Openshift ${OC_SERVER}"
                          """
                       echo 'Successfully'
+
+                      echo '###################################'
+
+                      echo 'select openshift project for currently loaded environment'
+                      echo 'delete openshift project for currently loaded environment'
+                      echo 'create openshift project for currently loaded environment (if not exists)'
+
+                       sh """
+                        oc project "${OC_PROJECT_NAME}"
+
+                        oc delete project "${OC_PROJECT_NAME}"
+
+                        oc new-project "${OC_PROJECT_NAME}" --description="${OC_PROJECT_DESCRIPTION}" || true
+
+                          """
                   }
                 }
             }
