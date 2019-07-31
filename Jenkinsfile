@@ -42,7 +42,6 @@ pipeline{
                 steps{
                     script{
                         echo 'step 4.5'
-                        }
                     }
                 }
             }
