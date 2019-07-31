@@ -55,11 +55,15 @@ pipeline{
             }
             stage('Openshift'){
 
-                    if (sh script: oc project "${OC_PROJECT_NAME}"  == null) {
-                                echo 'Please new Project here'
-                            } else {
-                                echo 'I execute elsewhere'
+                    try {
+                                sh """ oc project "${OC_PROJECT_NAME}" """
                             }
+                            catch (exc) {
+                                echo 'User do not exists'
+                                throw
+                            }
+
+
                 steps{
                   script{
                       echo 'login to openshift project for currently loaded environment'
