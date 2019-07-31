@@ -60,7 +60,6 @@ pipeline{
                             }
                             catch (exc) {
                                 echo 'User do not exists'
-                                throw
                             }
 
 
