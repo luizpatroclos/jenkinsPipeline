@@ -58,7 +58,7 @@ pipeline{
                 steps{
                   script{
 
-                       if (sh 'oc project "${OC_PROJECT_NAME}" '  == null) {
+                       if (( sh 'oc project "${OC_PROJECT_NAME}" ')  == null) {
                           echo 'Please new Project here'
                        }  else {
                           echo 'I execute elsewhere'
