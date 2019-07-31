@@ -42,7 +42,7 @@ pipeline{
                   script{
                       echo 'login to openshift project for currently loaded environment'
                       sh """
-                        oc login -u "${params.OC_USER}" -p "${params.OC_PASSWORD}" "${params.OC_SERVER}" && echo "Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}"
+                        oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
                          """
                       echo 'Successfully'
 
