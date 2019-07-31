@@ -53,7 +53,7 @@ pipeline{
                   }
                 }
             }
-            stage('Openshift'){
+            stage('Openshift-try current project'){
 
                     try {
                                 sh """ oc project "${OC_PROJECT_NAME}" """
