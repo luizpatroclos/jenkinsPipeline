@@ -1,5 +1,10 @@
 def applicationName = "jenkinspipeline";
 def applicationNameST = "${applicationName}-st";
+
+def OC_PASSWORD = "dev";
+def OC_SERVER = "openshift.oc.techfirm.cloud:8443";
+def OC_USER = "dev";
+
 pipeline{
     agent any
     stages{
