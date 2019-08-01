@@ -52,7 +52,7 @@ pipeline{
 
                        try {
                            sh  '''
-                               oc delete project ${params.OC_PROJECT_NAME}
+                               oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
                                '''
                                 }
                                finally {
@@ -83,7 +83,7 @@ pipeline{
 
                        try {
                           sh  '''
-                             oc new-project ${params.OC_PROJECT_NAME}
+                             oc new-project ${params.OC_PROJECT_NAME} &&  echo 'Try to create  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
                               '''
                        }
                         finally {
