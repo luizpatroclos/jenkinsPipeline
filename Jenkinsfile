@@ -91,7 +91,7 @@ pipeline{
                             then
                               echo $current
                             else
-                              echo ${params.REPLICA_COUNT}
+                              echo '${params.REPLICA_COUNT}'
                             fi
                           '''
 
