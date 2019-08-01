@@ -118,13 +118,11 @@ pipeline{
 
                   sh """
 
-                  function oc_deploy() {
-
                         echo 'in here'
 
-                        local fqdn="1"
-                        #local back_replica_count=$(replica_count back)
-                        #local front_replica_count=$(replica_count front)
+                        set fqdn="1"
+                        set back_replica_count=$(replica_count back)
+                        set front_replica_count=$(replica_count front)
 
                              for file in openshift/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
                               PROJECT_NAME="${params.OC_PROJECT_NAME}" \
@@ -147,7 +145,7 @@ pipeline{
 
                               echo 'out here'
 
-                  }
+
 
                   """
 
