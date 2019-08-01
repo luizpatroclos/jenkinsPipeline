@@ -87,7 +87,7 @@ pipeline{
                         //Return the current number of replicas for a given 'app' label if it is an integer greater than 0, otherwise the environment configured replica count
 
                           sh '''
-                            set current=$(oc get --ignore-not-found=true --no-headers=true -l app=${1} dc | awk { print $3 })
+                            set current=$(oc get --ignore-not-found=true --no-headers=true -l app=${1} dc | awk '{ print $3 }')
                             if [[ $current -gt 0 ]]
                             then
                               echo $current
