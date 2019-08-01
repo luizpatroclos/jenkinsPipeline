@@ -9,7 +9,7 @@ pipeline{
            string(name: 'OC_PASSWORD', defaultValue: 'dev', description: 'pass')
            string(name: 'OC_SERVER', defaultValue: 'openshift.oc.techfirm.cloud:8443', description: 'server')
            string(name: 'OC_USER', defaultValue: 'dev', description: 'user')
-           string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline')
+           string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description:'')
            string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
            string(name: 'projetc', defaultValue: '')
 
