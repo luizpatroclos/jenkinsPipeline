@@ -12,7 +12,15 @@ pipeline{
            string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description:'')
            string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
            string(name: 'REPLICA_COUNT', defaultValue: '2')
-
+           string(name: 'VERSION', defaultValue: '325')
+           string(name: 'REVISION', defaultValue: '10')
+           string(name: 'FQDN', defaultValue: '3')
+           string(name: 'GRAYLOG_HOST', defaultValue: 'web.com')
+           string(name: 'GRAYLOG_PORT', defaultValue: '8082')
+           string(name: 'ES_CLUSTER_NAME', defaultValue: 'beirinha')
+           string(name: 'ES_CLUSTER_NODES', defaultValue: '8')
+           string(name: 'BACK_REPLICA_COUNT', defaultValue: '3')
+           string(name: 'FRONT_REPLICA_COUNT' , defaultValue: '3')
      }
 
     stages{
@@ -100,11 +108,48 @@ pipeline{
                     }
                 }
             }
-            stage('system tests') {
-                steps{
-                    echo 'step 1'
-                    //sh script: "cd ${applicationNameST} && mvn failsafe:integration-test failsafe:verify"
+            stage('openshift-deploy') {
+
+                 //deploy currently loaded environment with url given as 1st parameter
+                 //will process and apply every yml template files in openshift folder
+                 //with required environment parameters
+              steps{
+                script{
+
+                  sh """
+
+                  function oc_deploy() {
+
+                        local fqdn="${1}"
+                        local back_replica_count=$(replica_count back)
+                        local front_replica_count=$(replica_count front)
+
+                             for file in openshift/*.yml; do oc process --ignore-unknown-parameters=true -f ${file} \
+                              PROJECT_NAME="${params.OC_PROJECT_NAME}" \
+                              VERSION="${params.VERSION}" \
+                              REVISION="${params.REVISION}" \
+                              FQDN="${params.FQDN}" \
+                              GRAYLOG_HOST="${params.GRAYLOG_HOST}" \
+                              GRAYLOG_PORT="${params.GRAYLOG_PORT}" \
+                              ES_CLUSTER_NAME="${params.ES_CLUSTER_NAME}" \
+                              ES_CLUSTER_NODES="${params.ES_CLUSTER_NODES}" \
+                              RETRAINING_ENABLED="${params.RETRAINING_ENABLED}" \
+                              BACK_REPLICA_COUNT="${params.BACK_REPLICA_COUNT}" \
+                              FRONT_REPLICA_COUNT="${params.FRONT_REPLICA_COUNT}" | oc apply -f -; done
+
+                  for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f ${file} \
+                              PROJECT_NAME="${params.OC_PROJECT_NAME}" \
+                              VERSION="${params.VERSION}" \
+                              REVISION="${params.REVISION}" \
+                              FQDN="${params.FQDN}" | oc apply -f -; done
+
+                  }
+
+                  """
+
+                     echo 'step 4.6'
                 }
+              }
             }
     }
 }
