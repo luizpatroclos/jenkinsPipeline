@@ -63,7 +63,7 @@ pipeline{
                     script {
                        try {
                           sh  '''
-                             oc new-project ${params.OC_PROJECT_NAME}
+                             oc new-project jenkinspipeline
                               '''
                        }
                         finally {
