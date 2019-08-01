@@ -9,7 +9,7 @@ pipeline{
            string(name: 'OC_PASSWORD', defaultValue: 'dev', description: 'pass')
            string(name: 'OC_SERVER', defaultValue: 'openshift.oc.techfirm.cloud:8443', description: 'server')
            string(name: 'OC_USER', defaultValue: 'dev', description: 'user')
-           string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description: 'project')
+           string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline')
            string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
      }
 
@@ -51,9 +51,11 @@ pipeline{
 
                       echo 'delete openshift project for currently loaded environment'
 
-                       //sh """
-                       // oc delete project "${OC_PROJECT_NAME}"
-                        //  """
+                       sh """
+                          oc delete project ${params.OC_PROJECT_NAME}
+                          """
+
+                      echo 'Project has been deleted'
                   }
                 }
             }
@@ -63,7 +65,7 @@ pipeline{
                     script {
                        try {
                           sh  '''
-                             oc new-project jenkinspipeline
+                             oc new-project ${params.OC_PROJECT_NAME}
                               '''
                        }
                         finally {
