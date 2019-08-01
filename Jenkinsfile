@@ -126,7 +126,7 @@ pipeline{
                         local back_replica_count=$(replica_count back)
                         local front_replica_count=$(replica_count front)
 
-                             for file in openshift/*.yml; do oc process --ignore-unknown-parameters=true -f ${file} \
+                             for file in openshift/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
                               PROJECT_NAME="${params.OC_PROJECT_NAME}" \
                               VERSION="${params.VERSION}" \
                               REVISION="${params.REVISION}" \
@@ -139,7 +139,7 @@ pipeline{
                               BACK_REPLICA_COUNT="${params.BACK_REPLICA_COUNT}" \
                               FRONT_REPLICA_COUNT="${params.FRONT_REPLICA_COUNT}" | oc apply -f -; done
 
-                  for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f ${file} \
+                  for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
                               PROJECT_NAME="${params.OC_PROJECT_NAME}" \
                               VERSION="${params.VERSION}" \
                               REVISION="${params.REVISION}" \
