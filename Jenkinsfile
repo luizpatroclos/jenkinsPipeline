@@ -62,11 +62,6 @@ pipeline{
                                """
                       echo 'Project has been deleted'
 
-                       sh """
-                         oc logout
-                         """
-                       echo ' User Logout'
-
                   }
                 }
             }
