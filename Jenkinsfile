@@ -48,9 +48,9 @@ pipeline{
                       sh """
                         oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
 
-                        ${projetc}=oc project
+                        ${params.projetc}=oc project
 
-                        echo '${projetci} on Openshift'
+                        echo '${params.projetc} on Openshift'
                          """
                       echo 'Successfully'
 
@@ -60,9 +60,9 @@ pipeline{
                        try {
                            sh  '''
 
-                               ${projetc}=oc project
+                               ${params.projetc}=oc project
 
-                                  if [ projetc -eq ${params.OC_PROJECT_NAME} ]
+                                  if [ {params.projetc} -eq ${params.OC_PROJECT_NAME} ]
                                    then
                                      echo "Count is 100"
                                         else
