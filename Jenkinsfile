@@ -48,7 +48,7 @@ pipeline{
                       sh """
                         oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
 
-                        ${params.projetc} = oc project
+                        ${params.projetc}=oc project
 
                         echo '${params.projetc} on Openshift'
                          """
@@ -60,7 +60,7 @@ pipeline{
                        try {
                            sh  '''
 
-                               ${params.projetc} = oc project
+                               ${params.projetc}=oc project
 
                                   if [ {params.projetc} -eq ${params.OC_PROJECT_NAME} ]
                                    then
