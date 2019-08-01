@@ -48,13 +48,17 @@ pipeline{
                       echo 'Successfully'
 
                       echo '###################################'
-
                       echo 'delete openshift project for currently loaded environment'
 
-                       sh """
-                          oc delete project ${params.OC_PROJECT_NAME}
-                          """
-
+                       try {
+                           sh  '''
+                               oc delete project ${params.OC_PROJECT_NAME}
+                               '''
+                                }
+                               finally {
+                                echo 'New Project Created'
+                                 echo 'keepGoing'
+                                }
                       echo 'Project has been deleted'
 
                        sh """
