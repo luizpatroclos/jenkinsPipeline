@@ -116,7 +116,7 @@ pipeline{
               steps{
                 script{
 
-                  sh '''
+                  sh """
 
                   function oc_deploy() {
 
@@ -149,7 +149,7 @@ pipeline{
 
                   }
 
-                  '''
+                  """
 
                      echo 'step 4.6'
                 }
