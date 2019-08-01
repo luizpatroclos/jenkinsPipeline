@@ -116,7 +116,7 @@ pipeline{
               steps{
                 script{
 
-                  sh """
+                  sh '''
 
                         echo 'in here'
 
@@ -147,7 +147,7 @@ pipeline{
 
 
 
-                  """
+                  '''
 
                      echo 'step 4.6'
                 }
