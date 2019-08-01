@@ -44,6 +44,10 @@ pipeline{
                       echo 'login to openshift project for currently loaded environment'
                       sh """
                         oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
+
+                        projetci=oc project
+
+                        echo '${projetci} on Openshift'
                          """
                       echo 'Successfully'
 
@@ -52,6 +56,15 @@ pipeline{
 
                        try {
                            sh  '''
+
+                               projetc=oc project
+
+                                  if [ projetc -eq ${params.OC_PROJECT_NAME} ]
+                                   then
+                                     echo "Count is 100"
+                                        else
+                                           echo "Count is not 100"
+                                        fi
                                oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
                                '''
                                 }
