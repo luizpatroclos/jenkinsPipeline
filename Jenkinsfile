@@ -53,13 +53,13 @@ pipeline{
 
                       echo 'delete openshift project for currently loaded environment'
 
-                           sh  '''
+                           sh  """
                                 {
                                    oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
                                 } || {
                                    echo 'There is no project to delete'
                                 }
-                               '''
+                               """
                       echo 'Project has been deleted'
 
                        sh """
