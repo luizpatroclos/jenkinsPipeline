@@ -83,9 +83,9 @@ pipeline{
                     echo 'Successfully'
 
                        try {
-                          sh  '''
+                          sh  """
                              oc new-project ${params.OC_PROJECT_NAME} &&  echo 'Try to create  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
-                              '''
+                              """
                        }
                         finally {
                           echo 'New Project Created'
