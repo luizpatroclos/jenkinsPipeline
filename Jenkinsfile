@@ -48,33 +48,18 @@ pipeline{
                       sh """
                         oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
 
-                        ${params.projetc}=oc project
-
-                        echo '${params.projetc} on Openshift'
                          """
                       echo 'Successfully'
 
-                      echo '###################################'
                       echo 'delete openshift project for currently loaded environment'
 
-                       try {
                            sh  '''
-
-                               ${params.projetc}=oc project
-
-                                  if [ {params.projetc} -eq ${params.OC_PROJECT_NAME} ]
-                                   then
-                                     echo "Count is 100"
-                                        else
-                                           echo "Count is not 100"
-                                        fi
-                               oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
+                                {
+                                   oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
+                                } || {
+                                   echo 'There is no project to delete'
+                                }
                                '''
-                                }
-                               finally {
-                                echo 'New Project Created'
-                                 echo 'keepGoing'
-                                }
                       echo 'Project has been deleted'
 
                        sh """
