@@ -56,6 +56,12 @@ pipeline{
                           """
 
                       echo 'Project has been deleted'
+
+                       sh """
+                         oc logout
+                         """
+                       echo ' User Logout'
+
                   }
                 }
             }
@@ -63,6 +69,14 @@ pipeline{
 
                 steps{
                     script {
+
+                    echo 'login to openshift project for currently loaded environment'
+                    sh """
+                     oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
+                       """
+
+                    echo 'Successfully'
+
                        try {
                           sh  '''
                              oc new-project ${params.OC_PROJECT_NAME}
