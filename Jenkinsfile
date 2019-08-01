@@ -58,6 +58,7 @@ pipeline{
                                    oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
                                 } || {
                                    echo 'There is no project to delete'
+                                   echo '${params.REPLICA_COUNT}'
                                 }
                                """
                       echo 'Project has been deleted'
@@ -86,12 +87,12 @@ pipeline{
                         //Return the current number of replicas for a given 'app' label if it is an integer greater than 0, otherwise the environment configured replica count
 
                           sh '''
-                            set current=$(oc get --ignore-not-found=true --no-headers=true -l app=${1} dc | awk '{ print $3 }')
+                            set current=$(oc get --ignore-not-found=true --no-headers=true -l app=${1} dc | awk { print $3 })
                             if [[ $current -gt 0 ]]
                             then
                               echo $current
                             else
-                              echo "${params.REPLICA_COUNT}"
+                              echo '${params.REPLICA_COUNT}'
                             fi
                           '''
 
