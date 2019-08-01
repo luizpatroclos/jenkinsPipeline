@@ -120,7 +120,7 @@ pipeline{
 
                   function oc_deploy() {
 
-                        local fqdn='${1}'
+                        local fqdn="\${1}"
                         local back_replica_count=$(replica_count back)
                         local front_replica_count=$(replica_count front)
 
