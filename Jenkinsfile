@@ -120,6 +120,8 @@ pipeline{
 
                   function oc_deploy() {
 
+                        echo 'in here'
+
                         local fqdn="1"
                         local back_replica_count=$(replica_count back)
                         local front_replica_count=$(replica_count front)
@@ -142,6 +144,8 @@ pipeline{
                               VERSION="${params.VERSION}" \
                               REVISION="${params.REVISION}" \
                               FQDN="${params.FQDN}" | oc apply -f -; done
+
+                              echo 'out here'
 
                   }
 
