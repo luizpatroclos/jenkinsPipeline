@@ -59,8 +59,8 @@ pipeline{
               steps{
                 script{
                   sh """
-                      safebranch="jenkinspipeline"
-                      fqdn="conciliation-\${safebranch}.oc.techfirm.cloud"
+                      set safebranch="jenkinspipeline"
+                      set fqdn="conciliation-\${safebranch}.oc.techfirm.cloud"
 
                       for file in openshift/*.yml; do
                         oc process \
