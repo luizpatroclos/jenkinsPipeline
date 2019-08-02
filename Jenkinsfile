@@ -48,17 +48,6 @@ pipeline{
                     //sh script: "cd ${applicationName} && mvn failsafe:integration-test failsafe:verify"
                 }
             }
-            stage('Openshift'){
-                steps{ //Step one log in to openshift and delete the current project
-                  script{
-                      echo 'login to openshift project for currently loaded environment'
-                      sh """
-                        oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
-                         """
-                      echo 'Successfully'
-                  }
-                }
-            }
             stage('Openshift-buid'){
 
                 steps{ //Step two create a new project in openshift
