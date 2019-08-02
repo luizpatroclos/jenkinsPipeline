@@ -1,6 +1,5 @@
 def applicationName = "jenkinspipeline";
 def projectName = "conciliation";
-def safebranch = 'unknown'
 
 pipeline{
     agent any
@@ -60,14 +59,13 @@ pipeline{
                  //with required environment parameters
               steps{
                 script{
-                safebranch = "jenkinspipeline"
-                  sh """
+                  sh '''
                       fqdn="conciliation-${safebranch}.oc.techfirm.cloud"
 
                       for file in openshift/*.yml; do
                         oc process \
                           --ignore-unknown-parameters=true -f \${file} \
-                          PROJECT_NAME="${projectName}" \
+                          PROJECT_NAME="${params.OC_PROJECT_NAME}" \
                           VERSION="${safebranch}" \
                           REVISION="${GIT_COMMIT}" \
                           FQDN="${fqdn}" | oc apply -f -
@@ -80,7 +78,7 @@ pipeline{
                                   FQDN="${fqdn}" | oc apply -f -
                       done
 
-                  """
+                  '''
                 }
               }
             }
