@@ -1,5 +1,5 @@
 def applicationName = "jenkinspipeline";
-def applicationNameST = "${applicationName}-st";
+def projectName = "conciliation";
 
 pipeline{
     agent any
@@ -10,17 +10,6 @@ pipeline{
            string(name: 'OC_SERVER', defaultValue: 'openshift.oc.techfirm.cloud:8443', description: 'server')
            string(name: 'OC_USER', defaultValue: 'dev', description: 'user')
            string(name: 'OC_PROJECT_NAME', defaultValue: 'jenkinspipeline', description:'')
-           string(name: 'OC_PROJECT_DESCRIPTION', defaultValue: 'Pipeline Test', description: 'description')
-           string(name: 'REPLICA_COUNT', defaultValue: '2')
-           string(name: 'VERSION', defaultValue: '325')
-           string(name: 'REVISION', defaultValue: '10')
-           string(name: 'FQDN', defaultValue: '3')
-           string(name: 'GRAYLOG_HOST', defaultValue: 'web.com')
-           string(name: 'GRAYLOG_PORT', defaultValue: '8082')
-           string(name: 'ES_CLUSTER_NAME', defaultValue: 'beirinha')
-           string(name: 'ES_CLUSTER_NODES', defaultValue: '8')
-           string(name: 'BACK_REPLICA_COUNT', defaultValue: '3')
-           string(name: 'FRONT_REPLICA_COUNT' , defaultValue: '3')
      }
 
     stages{
@@ -76,7 +65,7 @@ pipeline{
                       for file in openshift/*.yml; do
                         oc process \
                           --ignore-unknown-parameters=true -f \${file} \
-                          PROJECT_NAME=params.OC_PROJECT_NAME \
+                          PROJECT_NAME=projectName \
                           VERSION="${safebranch}" \
                           REVISION="${GIT_COMMIT}" \
                           FQDN="${fqdn}" | oc apply -f -
@@ -88,7 +77,7 @@ pipeline{
                                   REVISION="${GIT_COMMIT}" \
                                   FQDN="${fqdn}" | oc apply -f -
                       done
-                      
+
                   '''
                 }
               }
