@@ -64,25 +64,35 @@ pipeline{
                 }
             }
 
-            stage('Openshift return the current number of replicas'){
-                steps{
-                    script{
+            stage('Deploy') {
+                 //deploy currently loaded environment with url given as 1st parameter
+                 //will process and apply every yml template files in openshift folder
+                 //with required environment parameters
+              steps{
+                script{
+                  sh '''
+                      fqdn="conciliation-${safebranch}.oc.techfirm.cloud"
 
-                        //Return the current number of replicas for a given 'app' label if it is an integer greater than 0, otherwise the environment configured replica count
+                      for file in openshift/*.yml; do
+                        oc process \
+                          --ignore-unknown-parameters=true -f \${file} \
+                          PROJECT_NAME=${params.OC_PROJECT_NAME} \
+                          VERSION="${safebranch}" \
+                          REVISION="${GIT_COMMIT}" \
+                          FQDN="${fqdn}" | oc apply -f -
+                      done
 
-                          sh '''
-                            set current=$(oc get --ignore-not-found=true --no-headers=true -l app=${1} dc | awk '{ print $3 }')
-                            if [[ $current -gt 0 ]]
-                            then
-                              echo $current
-                            else
-                              echo '${params.REPLICA_COUNT}'
-                            fi
-                          '''
+                      for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
+                                  PROJECT_NAME=${params.OC_PROJECT_NAME} \
+                                  VERSION="${safebranch}" \
+                                  REVISION="${GIT_COMMIT}" \
+                                  FQDN="${fqdn}" | oc apply -f -
+                      done
 
-                        echo 'step 4.6'
-                    }
+
+                  '''
                 }
+              }
             }
     }
 }
