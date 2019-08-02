@@ -1,5 +1,4 @@
 def applicationName = "jenkinspipeline";
-def projectName = "conciliation";
 
 pipeline{
     agent any
@@ -65,7 +64,7 @@ pipeline{
                       for file in openshift/*.yml; do
                         oc process \
                           --ignore-unknown-parameters=true -f \${file} \
-                          PROJECT_NAME="${params.OC_PROJECT_NAME}" \
+                          PROJECT_NAME='{params.OC_PROJECT_NAME}' \
                           VERSION="${safebranch}" \
                           REVISION="${GIT_COMMIT}" \
                           FQDN="${fqdn}" | oc apply -f -
