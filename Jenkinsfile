@@ -65,7 +65,7 @@ pipeline{
                       for file in openshift/*.yml; do
                         oc process \
                           --ignore-unknown-parameters=true -f \${file} \
-                          PROJECT_NAME=projectName \
+                          PROJECT_NAME="${projectName}" \
                           VERSION="${safebranch}" \
                           REVISION="${GIT_COMMIT}" \
                           FQDN="${fqdn}" | oc apply -f -
