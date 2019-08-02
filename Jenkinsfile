@@ -49,38 +49,25 @@ pipeline{
                 }
             }
             stage('Openshift'){
-
                 steps{ //Step one log in to openshift and delete the current project
                   script{
                       echo 'login to openshift project for currently loaded environment'
                       sh """
                         oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
-
                          """
                       echo 'Successfully'
-
-                      echo 'delete openshift project for currently loaded environment'
-
-                           sh  """
-                                {
-                                   oc delete project ${params.OC_PROJECT_NAME} &&  echo 'Try to delete  as ${params.OC_USER} on Openshift the project  ${params.OC_SERVER}'
-                                } || {
-                                   echo 'There is no project to delete'
-                                   echo '${params.REPLICA_COUNT}'
-                                }
-                               """
-                      echo 'Project has been deleted'
-
                   }
                 }
             }
-            stage('Openshift-try project'){
+            stage('Openshift-buid'){
 
                 steps{ //Step two create a new project in openshift
                     script {
 
                     //log in to openshift project for currently loaded environment
                     sh """
+                     oc login -u ${params.OC_USER} -p ${params.OC_PASSWORD} ${params.OC_SERVER} && echo 'Logged in as ${params.OC_USER} on Openshift ${params.OC_SERVER}'
+
                      oc new-project ${params.OC_PROJECT_NAME} || oc project ${params.OC_PROJECT_NAME} \
                      &&  echo 'Try to create  as ${params.OC_USER} on Openshift the project  ${params.OC_PROJECT_NAME}'
                        """
@@ -88,7 +75,7 @@ pipeline{
                 }
             }
 
-            stage('Return the current number of replicas'){
+            stage('Openshift return the current number of replicas'){
                 steps{
                     script{
 
@@ -107,51 +94,6 @@ pipeline{
                         echo 'step 4.6'
                     }
                 }
-            }
-            stage('openshift-deploy') {
-
-                 //deploy currently loaded environment with url given as 1st parameter
-                 //will process and apply every yml template files in openshift folder
-                 //with required environment parameters
-              steps{
-                script{
-
-                  sh '''
-
-                        echo 'in here'
-
-                        set fqdn="1"
-                        set back_replica_count=$(replica_count back)
-                        set front_replica_count=$(replica_count front)
-
-                             for file in openshift/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
-                              PROJECT_NAME="${params.OC_PROJECT_NAME}" \
-                              VERSION="${params.VERSION}" \
-                              REVISION="${params.REVISION}" \
-                              FQDN="${params.FQDN}" \
-                              GRAYLOG_HOST="${params.GRAYLOG_HOST}" \
-                              GRAYLOG_PORT="${params.GRAYLOG_PORT}" \
-                              ES_CLUSTER_NAME="${params.ES_CLUSTER_NAME}" \
-                              ES_CLUSTER_NODES="${params.ES_CLUSTER_NODES}" \
-                              RETRAINING_ENABLED="${params.RETRAINING_ENABLED}" \
-                              BACK_REPLICA_COUNT="${params.BACK_REPLICA_COUNT}" \
-                              FRONT_REPLICA_COUNT="${params.FRONT_REPLICA_COUNT}" | oc apply -f -; done
-
-                  for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
-                              PROJECT_NAME="${params.OC_PROJECT_NAME}" \
-                              VERSION="${params.VERSION}" \
-                              REVISION="${params.REVISION}" \
-                              FQDN="${params.FQDN}" | oc apply -f -; done
-
-                              echo 'out here'
-
-
-
-                  '''
-
-                     echo 'step 4.6'
-                }
-              }
             }
     }
 }
