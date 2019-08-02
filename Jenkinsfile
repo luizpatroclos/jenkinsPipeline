@@ -59,8 +59,8 @@ pipeline{
               steps{
                 script{
                   sh """
-                      set safebranch="jenkinspipeline"
-                      set fqdn="conciliation-\${safebranch}.oc.techfirm.cloud"
+                      safebranch="jenkinspipeline"
+                      fqdn="conciliation-\${safebranch}.oc.techfirm.cloud"
 
                       for file in openshift/*.yml; do
                         oc process \
@@ -73,9 +73,9 @@ pipeline{
 
                       #for file in openshift/mocks/*.yml; do oc process --ignore-unknown-parameters=true -f \${file} \
                        #           PROJECT_NAME=${params.OC_PROJECT_NAME} \
-                        #          VERSION="${safebranch}" \
+                        #          VERSION="\${safebranch}" \
                          #         REVISION="${GIT_COMMIT}" \
-                          #        FQDN="${fqdn}" | oc apply -f -
+                          #        FQDN="\${fqdn}" | oc apply -f -
                       #done
 
                   """
