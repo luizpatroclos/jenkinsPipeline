@@ -1,5 +1,6 @@
 def applicationName = "jenkinspipeline";
 def projectName = "conciliation";
+def safebranch = 'unknown'
 
 pipeline{
     agent any
@@ -59,6 +60,7 @@ pipeline{
                  //with required environment parameters
               steps{
                 script{
+                safebranch = "jenkinspipeline"
                   sh '''
                       fqdn="conciliation-${safebranch}.oc.techfirm.cloud"
 
